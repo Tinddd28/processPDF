@@ -1,0 +1,6 @@
+PyPDF2
+pdfminer.six
+pdfplumber
+pdf2image
+Pillow
+pytesseract 
