@@ -11,7 +11,7 @@ from pdf2image import convert_from_path
 import pytesseract
 
 import os
-
+import time
 from pathlib import Path
 
 def get_pdf_files(directory: str) -> list:
@@ -223,6 +223,8 @@ def process_element():
         #     resStr += s
         # print(resStr)
         print(result)
+
+        time.sleep(10)
 
 
 process_element()
