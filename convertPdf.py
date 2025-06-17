@@ -14,29 +14,48 @@ import os
 
 from pathlib import Path
 
+
+def write_to_file(file_path: str, data: str):
+    with open(file_path, "w", encoding="utf-8") as file:  # Открываем файл в режиме записи ('w')
+        file.write(data)  # Записываем все данные сразу
+
+
 def get_pdf_files(directory: str) -> list:
     path = Path(directory)
     return [file for file in path.glob("*.pdf")]
 
 directory_path = "./pdf"
-
+output_directory = "./txt"
 keywords = ["Имя", "Фамилия", "Отчество", "ФИО"]
 
+os.makedirs(output_directory, exist_ok=True)
 
 def process_element():
     files = get_pdf_files(directory_path)
+
     print(files)
     for file in files:
-        for _, page in enumerate(extract_pages(file)):
+        all_lines = []  # Список для хранения всех строк для текущего файла
+
+        for page_num, page in enumerate(extract_pages(file)):
             for element in page:
                 if isinstance(element, LTTextContainer):
                     line_text = text_extraction(element)
-                    print(line_text)
+                    # Добавляем найденные данные в список
+                    all_lines.append(line_text)
                 if isinstance(element, LTFigure):
                     pass
 
                 if isinstance(element, LTRect):
                     pass
+
+        # Генерируем путь к текстовому файлу
+        txt_file_name = file.stem + ".txt"  # Имя файла без расширения + ".txt"
+        txt_file_path = Path(output_directory) / txt_file_name  # Полный путь к файлу
+
+        # Объединяем все строки через '\n' и записываем в файл
+        concatenated_data = "\n".join(all_lines)
+        write_to_file(txt_file_path, concatenated_data)
 
 def text_extraction(element: LTTextContainer):
     line_text = element.get_text()
