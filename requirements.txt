@@ -4,3 +4,7 @@ pdfplumber
 pdf2image
 Pillow
 pytesseract 
+PyMuPDF
+easyocr
+torch
+torchvision
